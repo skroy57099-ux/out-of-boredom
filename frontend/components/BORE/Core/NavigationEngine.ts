@@ -1,4 +1,4 @@
-import { getProjectById } from "../Knowledge/projects";
+import { getProjectById } from "../../Projects/projects";
 
 export interface NavigationResult {
   success: boolean;

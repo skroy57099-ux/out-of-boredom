@@ -19,20 +19,27 @@ export default function ProjectGallery({
       </h2>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {project.gallery.map((image, index) => (
-          <div
-            key={index}
-            className="overflow-hidden rounded-xl border border-zinc-800"
-          >
-            <Image
-              src={image}
-              alt={`${project.title} ${index + 1}`}
-              width={1200}
-              height={800}
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        ))}
+        {project.gallery.map((image: any, index) => {
+          const src =
+            typeof image === "string"
+              ? image
+              : image?.src ?? image?.url ?? image?.path ?? "";
+
+          return (
+            <div
+              key={index}
+              className="overflow-hidden rounded-xl border border-zinc-800"
+            >
+              <Image
+                src={src}
+                alt={`${project.title} ${index + 1}`}
+                width={1200}
+                height={800}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          );
+        })}
       </div>
     </section>
   );

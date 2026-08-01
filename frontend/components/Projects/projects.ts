@@ -324,56 +324,7 @@ export const projects: Project[] = [
     },
   ],
 
-  readme: `
-# Multi-Model Financial Fraud Detection
-
-## 📖 Project Overview
-
-Developed an end-to-end machine learning pipeline to detect fraudulent financial transactions using historical transaction data. The project compares Logistic Regression, Random Forest, and Gradient Boosting under a unified preprocessing workflow. Special emphasis was placed on probability-based predictions, threshold tuning, and ROC-AUC evaluation to address the challenges of highly imbalanced datasets.
-
-## 🔄 Project Workflow
-
-- Data Loading & Validation
-- Exploratory Data Analysis (EDA)
-- Feature Engineering
-- Data Preprocessing using ColumnTransformer
-- Train-Test Split
-- Multi-Model Training
-- Probability-Based Prediction
-- Threshold Tuning
-- Model Evaluation
-- ROC-AUC Comparison
-
-## 🧰 Technologies Used
-
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-- Matplotlib
-- Jupyter Notebook
-
-## 🤖 Machine Learning Models
-
-- Logistic Regression
-- Random Forest
-- Gradient Boosting
-
-## 📊 Evaluation Metrics
-
-- Confusion Matrix
-- Classification Report
-- ROC-AUC Score
-
-## 🚀 Future Improvements
-
-- Precision-Recall AUC
-- Hyperparameter Tuning
-- Cost-Sensitive Learning
-- XGBoost / LightGBM
-- REST API Deployment
-- Real-Time Fraud Monitoring
-`,
+  
 },
 {
   id: "ai-financial-analysis",
