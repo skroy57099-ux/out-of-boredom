@@ -1,0 +1,231 @@
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(57,255,20,0.06) 3px,
+    transparent 4px
+  );
+
+  animation: scanMove 7s linear infinite;
+}
+
+@keyframes scanMove {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(4px);
+  }
+}
+
+.crt-noise {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px);
+
+  background-size:4px 4px;
+
+  animation: noiseMove .25s steps(2) infinite;
+}
+
+@keyframes noiseMove {
+
+  0%{
+      transform:translate(0,0);
+  }
+
+  25%{
+      transform:translate(-2px,1px);
+  }
+
+  50%{
+      transform:translate(2px,-1px);
+  }
+
+  75%{
+      transform:translate(-1px,2px);
+  }
+
+  100%{
+      transform:translate(0,0);
+  }
+
+}
+/* ---------- RANDOM GLITCH ---------- */
+
+@keyframes glitch{
+
+    0%{
+
+        transform:translate(0px,0px);
+
+        filter:none;
+
+    }
+
+    20%{
+
+        transform:translate(-2px,1px);
+
+        filter:hue-rotate(20deg);
+
+    }
+
+    40%{
+
+        transform:translate(2px,-1px);
+
+        filter:contrast(180%);
+
+    }
+
+    60%{
+
+        transform:translate(-1px,2px);
+
+        filter:brightness(150%);
+
+    }
+
+    80%{
+
+        transform:translate(1px,-2px);
+
+    }
+
+    100%{
+
+        transform:translate(0px,0px);
+
+        filter:none;
+
+    }
+
+}
+.boot{
+
+    animation:
+        boreBoot .8s ease-out;
+}
+
+@keyframes boreBoot{
+
+    0%{
+
+        opacity:0;
+
+        transform:scale(.96);
+
+        filter:brightness(0);
+
+    }
+
+    20%{
+
+        opacity:.4;
+
+        transform:translateY(-3px);
+
+    }
+
+    40%{
+
+        opacity:.8;
+
+        transform:translateY(2px);
+
+    }
+
+    70%{
+
+        filter:brightness(2);
+
+    }
+
+    100%{
+
+        opacity:1;
+
+        transform:none;
+
+        filter:none;
+
+    }
+
+}
+
+@keyframes boreGlitch{
+
+0%{
+
+transform:translateX(0);
+
+}
+
+20%{
+
+transform:translateX(-3px);
+
+filter:hue-rotate(30deg);
+
+}
+
+40%{
+
+transform:translateX(4px);
+
+filter:contrast(180%);
+
+}
+
+60%{
+
+transform:translateY(-2px);
+
+}
+
+80%{
+
+transform:translateX(2px);
+
+}
+
+100%{
+
+transform:none;
+
+filter:none;
+
+}
+}
+.avatar {
+    position: relative;
+    margin: auto;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    isolation: isolate;
+}
+
+.sm{
+    width:8rem;
+    height:8rem;
+}
+
+.md{
+    width:14rem;
+    height:14rem;
+}
+
+.lg{
+    width:20rem;
+    height:20rem;
+}
