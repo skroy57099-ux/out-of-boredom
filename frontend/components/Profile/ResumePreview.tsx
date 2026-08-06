@@ -18,7 +18,7 @@ export default function ResumePreview() {
 
       <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 shadow-2xl">
         <embed
-          src="/resume/resume.pdf#zoom=page-width"
+          src="/resume/Resume.pdf#zoom=page-width"
           type="application/pdf"
           className="h-[85vh] w-full"
         />
@@ -27,7 +27,7 @@ export default function ResumePreview() {
       <div className="flex flex-wrap gap-4">
 
         <a
-          href="/resume/resume.pdf"
+          href="/resume/Resume.pdf"
           download
           className="rounded-lg bg-white px-5 py-3 font-medium text-black transition hover:bg-neutral-200"
         >
@@ -35,7 +35,7 @@ export default function ResumePreview() {
         </a>
 
         <a
-          href="/resume/resume.pdf"
+          href="/resume/Resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-lg border border-neutral-700 px-5 py-3 text-white transition hover:bg-neutral-800"
