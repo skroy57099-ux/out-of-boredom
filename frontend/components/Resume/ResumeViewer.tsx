@@ -27,7 +27,7 @@ export default function ResumeViewer() {
             </Link>
 
             <a
-              href="/resume/resume.pdf"
+              href="/resume/Resume.pdf"
               download
               className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:bg-neutral-200"
             >
@@ -39,7 +39,7 @@ export default function ResumeViewer() {
         {/* Resume Viewer */}
         <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 shadow-2xl">
           <embed
-            src="/resume/resume.pdf#zoom=page-width"
+            src="/resume/Resume.pdf#zoom=page-width"
             type="application/pdf"
             className="h-[88vh] w-full"
           />
