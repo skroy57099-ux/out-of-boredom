@@ -18,11 +18,16 @@ export default function Notebook() {
 
   useEffect(() => {
     initializePyodide().catch((error) => {
-      console.error("Failed to initialize Python:", error);
+      console.error(
+        "Failed to initialize Python:",
+        error
+      );
     });
   }, []);
 
-  const handleDatasetSelect = (code: string) => {
+  const handleDatasetSelect = (
+    code: string
+  ) => {
     const firstCell = cells[0];
 
     if (!firstCell) {
@@ -35,7 +40,8 @@ export default function Notebook() {
      */
     if (
       firstCell.code.trim() === "" ||
-      firstCell.code.trim() === 'print("Hello, BORE!")'
+      firstCell.code.trim() ===
+        'print("Hello, BORE!")'
     ) {
       updateCell(firstCell.id, {
         code,
@@ -46,56 +52,177 @@ export default function Notebook() {
 
     /*
      * If the user already has code,
-     * create another cell instead of destroying their work.
+     * create another cell instead of destroying
+     * their work.
      */
     addCell();
-
-    /*
-     * The newly-created cell will be handled by the notebook state.
-     * If your addCell() returns the new cell ID, we can make this
-     * even cleaner in the next small adjustment.
-     */
   };
 
-
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div
+      className="
+        flex
+        min-h-0
+        w-full
+        min-w-0
+        max-w-full
+        flex-1
+        flex-col
+      "
+    >
+      {/* ==================================================
+          TOOLBAR
+          ================================================== */}
 
-      {/* Toolbar */}
-      <Toolbar addCell={addCell} />
-
-      {/* Workspace */}
-      <div className="min-h-0 flex-1 overflow-hidden p-6">
-
-        <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-[260px_minmax(0,1fr)] overflow-hidden rounded-xl border border-white/10 bg-[#0B0F14]">
-
-          {/* Dataset Explorer */}
-          <DatasetExplorer
-            onDatasetSelect={handleDatasetSelect}
-          />
-
-          {/* Notebook */}
-          <div className="min-w-0 overflow-y-auto p-6">
-
-            <div className="mx-auto flex w-full flex-col gap-8">
-
-              {cells.map((cell, index) => (
-                <NotebookCell
-                  key={cell.id}
-                  cell={cell}
-                  cellNumber={index + 1}
-                  updateCell={updateCell}
-                />
-              ))}
-
-            </div>
-
-          </div>
-
-        </div>
-
+      <div
+        className="
+          w-full
+          min-w-0
+          max-w-full
+        "
+      >
+        <Toolbar addCell={addCell} />
       </div>
 
+      {/* ==================================================
+          WORKSPACE
+          ================================================== */}
+
+      <div
+        className="
+          min-h-0
+          w-full
+          min-w-0
+          max-w-full
+
+          flex-1
+
+          overflow-hidden
+
+          p-3
+          sm:p-4
+          lg:p-6
+        "
+      >
+        <div
+          className="
+            mx-auto
+
+            grid
+
+            w-full
+            min-w-0
+            max-w-7xl
+
+            grid-cols-1
+
+            overflow-hidden
+
+            rounded-xl
+
+            border
+            border-white/10
+
+            bg-[#0B0F14]
+
+            lg:grid-cols-[260px_minmax(0,1fr)]
+          "
+        >
+          {/* ==================================================
+              DATASET EXPLORER
+              ================================================== */}
+
+          <div
+            className="
+              min-w-0
+              max-w-full
+
+              border-b
+              border-white/10
+
+              lg:border-b-0
+              lg:border-r
+
+              lg:min-h-0
+            "
+          >
+            <div
+              className="
+                h-[220px]
+
+                overflow-y-auto
+
+                sm:h-[260px]
+
+                lg:h-full
+              "
+            >
+              <DatasetExplorer
+                onDatasetSelect={
+                  handleDatasetSelect
+                }
+              />
+            </div>
+          </div>
+
+          {/* ==================================================
+              NOTEBOOK
+              ================================================== */}
+
+          <div
+            className="
+              min-w-0
+              max-w-full
+
+              overflow-y-auto
+              overflow-x-hidden
+
+              p-3
+              sm:p-4
+              lg:p-6
+            "
+          >
+            <div
+              className="
+                mx-auto
+
+                flex
+                w-full
+                min-w-0
+                max-w-full
+
+                flex-col
+                gap-6
+
+                lg:gap-8
+              "
+            >
+              {cells.map(
+                (cell, index) => (
+                  <div
+                    key={cell.id}
+                    className="
+                      w-full
+                      min-w-0
+                      max-w-full
+                    "
+                  >
+                    <NotebookCell
+                      cell={cell}
+                      cellNumber={
+                        index + 1
+                      }
+                      updateCell={
+                        updateCell
+                      }
+                    />
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

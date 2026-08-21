@@ -8,55 +8,143 @@ import SQLSidebar from "../Sidebar/SQLSidebar";
 
 import { useSQLPlayground } from "../Hooks/useSQLPlayground";
 
-export default function SQLWorkspace() {
+export default function PracticeWorkspace() {
   const sql = useSQLPlayground("practice");
 
   return (
-    <section className="mt-6">
+    <section
+      className="
+        mt-6
+        w-full
+        min-w-0
+        max-w-full
+      "
+    >
+      {/* ==================================================
+          TOOLBAR
+          ================================================== */}
 
-      {/* Toolbar */}
+      <div className="w-full min-w-0 max-w-full">
+        <SQLToolbar sql={sql} />
+      </div>
 
-      <SQLToolbar sql={sql} />
-
-      {/* IDE */}
+      {/* ==================================================
+          IDE
+          ================================================== */}
 
       <div
         className="
           mt-4
+
           grid
+          grid-cols-1
+
           gap-4
-          xl:grid-cols-[220px_1fr_300px]
-          h-[75vh]
+
+          w-full
+          min-w-0
+          max-w-full
+
+          xl:grid-cols-[220px_minmax(0,1fr)_300px]
+
+          xl:h-[75vh]
         "
       >
-        {/* Explorer */}
+        {/* ==================================================
+            EXPLORER
+            ================================================== */}
 
-        <SQLExplorer sql={sql} />
+        <div
+          className="
+            w-full
+            min-w-0
+            max-w-full
+          "
+        >
+          <SQLExplorer sql={sql} />
+        </div>
 
-        {/* Middle */}
+        {/* ==================================================
+            MIDDLE WORKSPACE
+            ================================================== */}
 
-        <div className="flex h-full flex-col gap-4">
+        <div
+          className="
+            flex
+            w-full
+            min-w-0
+            max-w-full
 
-          {/* Editor */}
+            flex-col
+            gap-4
 
-          <div className="flex-1 overflow-hidden">
+            xl:h-full
+          "
+        >
+          {/* ==================================================
+              EDITOR
+              ================================================== */}
+
+          <div
+            className="
+              w-full
+              min-w-0
+              max-w-full
+
+              h-[360px]
+
+              sm:h-[420px]
+
+              xl:h-auto
+              xl:flex-1
+
+              min-h-0
+
+              overflow-hidden
+            "
+          >
             <SQLEditor sql={sql} />
           </div>
 
-          {/* Results */}
+          {/* ==================================================
+              RESULTS
+              ================================================== */}
 
-          <div className="h-[220px] overflow-hidden">
+          <div
+            className="
+              w-full
+              min-w-0
+              max-w-full
+
+              h-[240px]
+
+              sm:h-[260px]
+
+              xl:h-[220px]
+
+              min-h-0
+
+              overflow-hidden
+            "
+          >
             <SQLResults sql={sql} />
           </div>
-
         </div>
 
-        {/* Sidebar */}
+        {/* ==================================================
+            SIDEBAR
+            ================================================== */}
 
-        <SQLSidebar sql={sql} />
-
+        <div
+          className="
+            w-full
+            min-w-0
+            max-w-full
+          "
+        >
+          <SQLSidebar sql={sql} />
+        </div>
       </div>
-
     </section>
   );
 }

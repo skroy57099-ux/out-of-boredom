@@ -13,24 +13,88 @@ export default function PythonLayout() {
     useState<PlaygroundMode>("practice");
 
   return (
-    <main className="min-h-screen bg-[#0D1117] text-white">
+    <main
+      className="
+        min-h-screen
+        w-full
+        min-w-0
+        max-w-full
+        overflow-x-hidden
 
-      {/* Back */}
+        bg-[#0D1117]
+        text-white
+      "
+    >
+      {/* ==================================================
+          HEADER
+          ================================================== */}
+
       <PythonHeader />
 
-      <div className="mx-auto w-full max-w-[1400px] px-6 py-6">
+      {/* ==================================================
+          MAIN CONTENT
+          ================================================== */}
 
-        {/* Mode Switch */}
-        <div className="mb-6 flex items-center gap-3">
+      <div
+        className="
+          mx-auto
 
+          w-full
+          min-w-0
+          max-w-[1400px]
+
+          px-4
+          py-6
+
+          sm:px-6
+          sm:py-8
+
+          lg:px-8
+        "
+      >
+        {/* ==================================================
+            MODE SWITCH
+            ================================================== */}
+
+        <div
+          className="
+            mb-6
+
+            grid
+            w-full
+            max-w-full
+            grid-cols-2
+            gap-3
+          "
+        >
           <button
             type="button"
             onClick={() => setMode("practice")}
-            className={`rounded-lg px-5 py-2.5 text-sm font-medium transition ${
-              mode === "practice"
-                ? "bg-cyan-500 text-black"
-                : "border border-white/10 text-gray-400 hover:bg-white/5 hover:text-white"
-            }`}
+            className={`
+              w-full
+              min-w-0
+
+              rounded-lg
+
+              px-3
+              py-3
+
+              sm:px-5
+              sm:py-2.5
+
+              text-sm
+              sm:text-base
+
+              font-medium
+
+              transition
+
+              ${
+                mode === "practice"
+                  ? "bg-cyan-500 text-black"
+                  : "border border-white/10 text-gray-400 hover:bg-white/5 hover:text-white"
+              }
+            `}
           >
             Practice Mode
           </button>
@@ -38,26 +102,54 @@ export default function PythonLayout() {
           <button
             type="button"
             onClick={() => setMode("challenge")}
-            className={`rounded-lg px-5 py-2.5 text-sm font-medium transition ${
-              mode === "challenge"
-                ? "bg-cyan-500 text-black"
-                : "border border-white/10 text-gray-400 hover:bg-white/5 hover:text-white"
-            }`}
+            className={`
+              w-full
+              min-w-0
+
+              rounded-lg
+
+              px-3
+              py-3
+
+              sm:px-5
+              sm:py-2.5
+
+              text-sm
+              sm:text-base
+
+              font-medium
+
+              transition
+
+              ${
+                mode === "challenge"
+                  ? "bg-cyan-500 text-black"
+                  : "border border-white/10 text-gray-400 hover:bg-white/5 hover:text-white"
+              }
+            `}
           >
             Challenge Mode
           </button>
-
         </div>
 
-        {/* Active Mode */}
-        {mode === "practice" ? (
-          <Notebook />
-        ) : (
-          <ChallengeMode />
-        )}
+        {/* ==================================================
+            ACTIVE MODE
+            ================================================== */}
 
+        <div
+          className="
+            w-full
+            min-w-0
+            max-w-full
+          "
+        >
+          {mode === "practice" ? (
+            <Notebook />
+          ) : (
+            <ChallengeMode />
+          )}
+        </div>
       </div>
-
     </main>
   );
 }

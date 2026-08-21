@@ -13,56 +13,138 @@ export default function ChallengeWorkspace() {
   const sql = useSQLPlayground("challenge");
 
   return (
-    <section>
+    <section
+      className="
+        w-full
+        min-w-0
+        max-w-full
+      "
+    >
+      {/* ==================================================
+          TOOLBAR
+          ================================================== */}
 
-      {/* Toolbar */}
+      <div className="w-full min-w-0 max-w-full">
+        <SQLToolbar sql={sql} />
+      </div>
 
-      <SQLToolbar sql={sql} />
-
-      {/* IDE */}
+      {/* ==================================================
+          IDE
+          ================================================== */}
 
       <div
         className="
           mt-4
+
           grid
+          grid-cols-1
+
           gap-4
-          h-[75vh]
-          xl:grid-cols-[220px_1fr_340px]
+
+          w-full
+          min-w-0
+          max-w-full
+
+          xl:grid-cols-[220px_minmax(0,1fr)_340px]
+
+          xl:h-[75vh]
         "
       >
-        {/* Explorer */}
+        {/* ==================================================
+            EXPLORER
+            ================================================== */}
 
-        <SQLExplorer sql={sql} />
+        <div
+          className="
+            w-full
+            min-w-0
+            max-w-full
+          "
+        >
+          <SQLExplorer sql={sql} />
+        </div>
 
-        {/* Center */}
+        {/* ==================================================
+            CENTER
+            ================================================== */}
 
         <div
           className="
             flex
-            h-full
+            w-full
+            min-w-0
+            max-w-full
+
             flex-col
             gap-4
+
+            xl:h-full
           "
         >
-          {/* SQL Editor */}
+          {/* ==================================================
+              SQL EDITOR
+              ================================================== */}
 
-          <div className="flex-1 overflow-hidden">
+          <div
+            className="
+              w-full
+              min-w-0
+              max-w-full
+
+              h-[360px]
+
+              sm:h-[420px]
+
+              xl:h-auto
+              xl:flex-1
+
+              min-h-0
+
+              overflow-hidden
+            "
+          >
             <SQLEditor sql={sql} />
           </div>
 
-          {/* Results */}
+          {/* ==================================================
+              RESULTS
+              ================================================== */}
 
-          <div className="h-[220px] overflow-hidden">
+          <div
+            className="
+              w-full
+              min-w-0
+              max-w-full
+
+              h-[240px]
+
+              sm:h-[260px]
+
+              xl:h-[220px]
+
+              min-h-0
+
+              overflow-hidden
+            "
+          >
             <SQLResults sql={sql} />
           </div>
         </div>
 
-        {/* Challenge */}
+        {/* ==================================================
+            CHALLENGE PANEL
+            ================================================== */}
 
-        <ChallengePanel sql={sql}/>
-
+        <div
+          className="
+            w-full
+            min-w-0
+            max-w-full
+          "
+        >
+          <ChallengePanel sql={sql} />
+        </div>
       </div>
-
     </section>
   );
 }

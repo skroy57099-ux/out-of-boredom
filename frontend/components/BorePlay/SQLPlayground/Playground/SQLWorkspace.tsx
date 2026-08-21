@@ -11,20 +11,47 @@ export default function SQLWorkspace() {
   >("practice");
 
   return (
-    <section className="mt-6">
+    <section
+      className="
+        mt-6
+        w-full
+        min-w-0
+        max-w-full
+      "
+    >
+      {/* ==================================================
+          MODE SWITCH
+          ================================================== */}
 
-      {/* Mode Switch */}
-
-      <div className="mb-5 flex items-center gap-3">
-
+      <div
+        className="
+          mb-5
+          grid
+          w-full
+          max-w-full
+          grid-cols-2
+          gap-3
+        "
+      >
         <button
+          type="button"
           onClick={() => setMode("practice")}
           className={`
+            w-full
+            min-w-0
+
             rounded-xl
-            px-5
-            py-2.5
+
+            px-4
+            py-3
+            sm:px-5
+            sm:py-2.5
+
             text-sm
+            sm:text-base
+
             font-medium
+
             transition
 
             ${
@@ -38,13 +65,24 @@ export default function SQLWorkspace() {
         </button>
 
         <button
+          type="button"
           onClick={() => setMode("challenge")}
           className={`
+            w-full
+            min-w-0
+
             rounded-xl
-            px-5
-            py-2.5
+
+            px-4
+            py-3
+            sm:px-5
+            sm:py-2.5
+
             text-sm
+            sm:text-base
+
             font-medium
+
             transition
 
             ${
@@ -56,15 +94,25 @@ export default function SQLWorkspace() {
         >
           Challenge Mode
         </button>
-
       </div>
 
-      {mode === "practice" ? (
-        <PracticeWorkspace />
-      ) : (
-        <ChallengeWorkspace />
-      )}
+      {/* ==================================================
+          WORKSPACE
+          ================================================== */}
 
+      <div
+        className="
+          w-full
+          min-w-0
+          max-w-full
+        "
+      >
+        {mode === "practice" ? (
+          <PracticeWorkspace />
+        ) : (
+          <ChallengeWorkspace />
+        )}
+      </div>
     </section>
   );
 }

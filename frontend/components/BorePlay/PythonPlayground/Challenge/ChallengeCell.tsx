@@ -21,11 +21,16 @@ export default function ChallengeCell({
   onSubmit,
 }: ChallengeCellProps) {
   const [output, setOutput] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [executionTime, setExecutionTime] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [error, setError] =
+    useState<string | null>(null);
+  const [executionTime, setExecutionTime] =
+    useState(0);
+  const [running, setRunning] =
+    useState(false);
 
-  const handleEditorWillMount = (monaco: Monaco) => {
+  const handleEditorWillMount = (
+    monaco: Monaco
+  ) => {
     defineBoreTheme(monaco);
   };
 
@@ -39,9 +44,12 @@ export default function ChallengeCell({
 
       setOutput(result.output);
       setError(result.error);
-      setExecutionTime(result.executionTime);
+      setExecutionTime(
+        result.executionTime
+      );
     } catch (err) {
       setOutput("");
+
       setError(
         err instanceof Error
           ? err.message
@@ -62,7 +70,9 @@ export default function ChallengeCell({
 
       setOutput(result.output);
       setError(result.error);
-      setExecutionTime(result.executionTime);
+      setExecutionTime(
+        result.executionTime
+      );
 
       onSubmit();
     } catch (err) {
@@ -81,7 +91,9 @@ export default function ChallengeCell({
   };
 
   useEffect(() => {
-    const handleShortcut = (event: KeyboardEvent) => {
+    const handleShortcut = (
+      event: KeyboardEvent
+    ) => {
       if (
         event.ctrlKey &&
         event.key === "Enter"
@@ -105,32 +117,104 @@ export default function ChallengeCell({
   }, [code, running]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div
+      className="
+        flex
+        h-full
+        min-h-0
+        w-full
+        min-w-0
+        max-w-full
+        flex-col
+      "
+    >
+      {/* ==================================================
+          EDITOR HEADER
+          ================================================== */}
 
-      {/* Editor Header */}
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
+      <div
+        className="
+          flex
+          min-w-0
+          items-center
+          justify-between
+          gap-3
 
-        <span className="font-mono text-sm text-cyan-400">
+          border-b
+          border-white/10
+
+          px-3
+          py-2
+
+          sm:px-4
+        "
+      >
+        <span
+          className="
+            min-w-0
+            truncate
+
+            font-mono
+            text-sm
+            text-cyan-400
+          "
+        >
           challenge.py
         </span>
 
-        <span className="rounded-md border border-white/10 px-2.5 py-1 text-xs text-gray-500">
+        <span
+          className="
+            shrink-0
+
+            rounded-md
+            border
+            border-white/10
+
+            px-2
+            py-1
+
+            text-[10px]
+            sm:text-xs
+
+            text-gray-500
+          "
+        >
           Ctrl + Enter
         </span>
-
       </div>
 
-      {/* Editor */}
-      <div className="min-h-0">
+      {/* ==================================================
+          EDITOR
+          ================================================== */}
+
+      <div
+        className="
+          w-full
+          min-w-0
+          max-w-full
+
+          shrink-0
+
+          overflow-hidden
+
+          border-b
+          border-white/10
+        "
+      >
         <Editor
           beforeMount={handleEditorWillMount}
           language="python"
           value={code}
           theme="bore-dark"
+
           height="320px"
+
           onChange={(value) =>
-            onCodeChange(value ?? "")
+            onCodeChange(
+              value ?? ""
+            )
           }
+
           options={{
             minimap: {
               enabled: false,
@@ -153,49 +237,164 @@ export default function ChallengeCell({
               top: 12,
               bottom: 12,
             },
+
+            scrollbar: {
+              horizontal:
+                "auto",
+
+              vertical:
+                "auto",
+
+              alwaysConsumeMouseWheel:
+                false,
+            },
           }}
         />
       </div>
 
-      {/* Output */}
-      <div className="min-h-0 flex-1 overflow-auto border-t border-white/10">
+      {/* ==================================================
+          OUTPUT
+          ================================================== */}
+
+      <div
+        className="
+          min-h-[160px]
+          max-h-[280px]
+
+          w-full
+          min-w-0
+          max-w-full
+
+          flex-1
+
+          overflow-auto
+
+          border-b
+          border-white/10
+        "
+      >
         <CellOutput
           output={output}
           error={error}
-          executionTime={executionTime}
+          executionTime={
+            executionTime
+          }
         />
       </div>
 
-      {/* Controls */}
-      <div className="flex items-center gap-3 border-t border-white/10 p-4">
+      {/* ==================================================
+          CONTROLS
+          ================================================== */}
+
+      <div
+        className="
+          flex
+          w-full
+          min-w-0
+          max-w-full
+
+          flex-col
+          gap-2
+
+          border-t
+          border-white/10
+
+          p-3
+
+          sm:flex-row
+          sm:items-center
+          sm:gap-3
+          sm:p-4
+        "
+      >
+        {/* Run Code */}
 
         <button
           type="button"
           onClick={handleRun}
           disabled={running}
-          className="flex items-center gap-2 rounded-md bg-cyan-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
+          className="
+            flex
+            w-full
+            min-w-0
+
+            items-center
+            justify-center
+            gap-2
+
+            rounded-md
+
+            bg-cyan-500
+
+            px-4
+            py-2.5
+
+            text-sm
+            font-medium
+
+            text-black
+
+            transition
+
+            hover:bg-cyan-400
+
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+
+            sm:w-auto
+          "
         >
           <Play
             size={14}
             fill="currentColor"
           />
 
-          {running ? "Running..." : "Run Code"}
+          {running
+            ? "Running..."
+            : "Run Code"}
         </button>
+
+        {/* Check Answer */}
 
         <button
           type="button"
           onClick={handleSubmit}
           disabled={running}
-          className="flex items-center gap-2 rounded-md border border-white/10 px-4 py-2 text-sm text-gray-300 transition hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50"
+          className="
+            flex
+            w-full
+            min-w-0
+
+            items-center
+            justify-center
+            gap-2
+
+            rounded-md
+
+            border
+            border-white/10
+
+            px-4
+            py-2.5
+
+            text-sm
+            text-gray-300
+
+            transition
+
+            hover:bg-white/5
+
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+
+            sm:w-auto
+          "
         >
           <Send size={14} />
 
           Check Answer
         </button>
-
       </div>
-
     </div>
   );
 }
