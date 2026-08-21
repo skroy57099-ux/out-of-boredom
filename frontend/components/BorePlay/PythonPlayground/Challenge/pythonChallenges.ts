@@ -24,61 +24,161 @@ df = pd.read_csv("Amazon_sample.csv")
 # Write your solution below
 `;
 
+const plottingStarter = `import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("Amazon_sample.csv")
+
+# Write your solution below
+`;
+
 export const pythonChallenges: PythonChallenge[] = [
 
   // ============================================================
   // BEGINNER 01-10
+  // EXPLORE THE DATASET
   // ============================================================
 
   {
     id: "amazon-001",
-    title: "Find the Top 5 Products",
+    title: "View the First 5 Orders",
     difficulty: "Beginner",
     xp: 10,
     description:
-      "Find the 5 products with the highest total quantity sold.",
+      "Display the first 5 rows of the Amazon dataset to inspect the data.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use groupby(), sum(), sort_values(), and head().",
+      "Use the head() method.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("ProductName")["Quantity"].sum().sort_values(
-    ascending=False
-).head(5)
+df.head()
 `,
   },
 
   {
     id: "amazon-002",
-    title: "Average Rating by Category",
+    title: "View the Last 5 Orders",
     difficulty: "Beginner",
     xp: 10,
     description:
-      "Calculate the average rating for each product category and sort it from highest to lowest.",
+      "Display the last 5 rows of the Amazon dataset.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use groupby(), mean(), and sort_values().",
+      "Use the tail() method.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("Category")["Rating"].mean().sort_values(
-    ascending=False
-)
+df.tail()
 `,
   },
 
   {
     id: "amazon-003",
-    title: "Select Product Columns",
+    title: "Inspect the Dataset",
     difficulty: "Beginner",
     xp: 10,
     description:
-      "Display only the ProductName, Category, Brand, and Price columns.",
+      "Inspect the structure, column names, data types, and non-null information of the Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use info().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df.info()
+`,
+  },
+
+  {
+    id: "amazon-004",
+    title: "Describe the Dataset",
+    difficulty: "Beginner",
+    xp: 10,
+    description:
+      "Generate descriptive statistics for the numerical columns in the Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use describe().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df.describe()
+`,
+  },
+
+  {
+    id: "amazon-005",
+    title: "Find Dataset Dimensions",
+    difficulty: "Beginner",
+    xp: 10,
+    description:
+      "Find the number of rows and columns in the Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use the shape attribute.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df.shape
+`,
+  },
+
+  {
+    id: "amazon-006",
+    title: "Display Column Names",
+    difficulty: "Beginner",
+    xp: 10,
+    description:
+      "Display all column names available in the Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use the columns attribute.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df.columns
+`,
+  },
+
+  {
+    id: "amazon-007",
+    title: "Inspect Product Names",
+    difficulty: "Beginner",
+    xp: 10,
+    description:
+      "Display the ProductName column from the Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      'Select the column using df["ProductName"].',
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["ProductName"]
+`,
+  },
+
+  {
+    id: "amazon-008",
+    title: "Select Product Details",
+    difficulty: "Beginner",
+    xp: 10,
+    description:
+      "Display only ProductName, Category, Brand, and Price.",
     dataset: "Amazon_sample.csv",
     hint:
       "Select multiple columns using a list.",
@@ -87,20 +187,87 @@ df.groupby("Category")["Rating"].mean().sort_values(
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df[["ProductName", "Category", "Brand", "Price"]]
+df[[
+    "ProductName",
+    "Category",
+    "Brand",
+    "Price"
+]]
 `,
   },
 
   {
-    id: "amazon-004",
-    title: "Find Expensive Products",
+    id: "amazon-009",
+    title: "Explore Product Categories",
     difficulty: "Beginner",
     xp: 10,
     description:
-      "Find all products with a Price greater than 1000.",
+      "Find all unique product categories in the Amazon dataset.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use boolean filtering with the Price column.",
+      "Use unique() on the Category column.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Category"].unique()
+`,
+  },
+
+  {
+    id: "amazon-010",
+    title: "Count Orders by Category",
+    difficulty: "Beginner",
+    xp: 10,
+    description:
+      "Count how many records belong to each product category.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use value_counts().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Category"].value_counts()
+`,
+  },
+
+  // ============================================================
+  // INTERMEDIATE 11-20
+  // FILTERING + CLEANING
+  // ============================================================
+
+  {
+    id: "amazon-011",
+    title: "Find Highly Rated Products",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Find all products with a Rating of 4.5 or higher.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use boolean filtering with the Rating column.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df[df["Rating"] >= 4.5]
+`,
+  },
+
+  {
+    id: "amazon-012",
+    title: "Find Expensive Products",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Find all records where Price is greater than 1000.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Filter the Price column using a comparison.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
@@ -111,53 +278,222 @@ df[df["Price"] > 1000]
   },
 
   {
-    id: "amazon-005",
-    title: "Top Rated Products",
-    difficulty: "Beginner",
-    xp: 10,
+    id: "amazon-013",
+    title: "Filter by Category",
+    difficulty: "Intermediate",
+    xp: 20,
     description:
-      "Display the 10 products with the highest ratings.",
+      "Filter the dataset to show only records belonging to the first available category.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Sort Rating descending and use head().",
+      "Store the first unique Category value and use it for filtering.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+category = df["Category"].dropna().iloc[0]
+
+df[df["Category"] == category]
+`,
+  },
+
+  {
+    id: "amazon-014",
+    title: "Find High Quantity Orders",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Find orders where Quantity is greater than 5.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Filter using the Quantity column.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df[df["Quantity"] > 5]
+`,
+  },
+
+  {
+    id: "amazon-015",
+    title: "Sort Products by Price",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Sort the Amazon dataset from the most expensive product to the least expensive.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use sort_values() with ascending=False.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
 df.sort_values(
-    "Rating",
+    "Price",
     ascending=False
-).head(10)
+)
 `,
   },
 
   {
-    id: "amazon-006",
-    title: "Total Quantity Sold",
-    difficulty: "Beginner",
-    xp: 10,
+    id: "amazon-016",
+    title: "Check Missing Values",
+    difficulty: "Intermediate",
+    xp: 20,
     description:
-      "Calculate the total quantity of products sold across the entire dataset.",
+      "Find the number of missing values in every column.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use sum() on Quantity.",
+      "Use isnull() followed by sum().",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Quantity"].sum()
+df.isnull().sum()
 `,
   },
 
   {
-    id: "amazon-007",
-    title: "Average Product Price",
-    difficulty: "Beginner",
-    xp: 10,
+    id: "amazon-017",
+    title: "Find Rows with Missing Data",
+    difficulty: "Intermediate",
+    xp: 20,
     description:
-      "Calculate the average product price in the dataset.",
+      "Display all rows containing at least one missing value.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use isnull().any(axis=1).",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df[df.isnull().any(axis=1)]
+`,
+  },
+
+  {
+    id: "amazon-018",
+    title: "Remove Duplicate Orders",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Remove duplicate rows from the Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use drop_duplicates().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df.drop_duplicates()
+`,
+  },
+
+  {
+    id: "amazon-019",
+    title: "Fill Missing Values",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Replace missing values in the Rating column with the average rating.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Calculate the Rating mean and use fillna().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Rating"] = df["Rating"].fillna(
+    df["Rating"].mean()
+)
+
+df
+`,
+  },
+
+  {
+    id: "amazon-020",
+    title: "Replace Missing Category Labels",
+    difficulty: "Intermediate",
+    xp: 20,
+    description:
+      "Replace missing values in the Category column with the label 'Unknown'.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use fillna() on the Category column.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Category"] = df["Category"].fillna(
+    "Unknown"
+)
+
+df
+`,
+  },
+
+  // ============================================================
+  // ADVANCED 21-30
+  // TRANSFORMATION + AGGREGATION
+  // ============================================================
+
+  {
+    id: "amazon-021",
+    title: "Calculate Total Revenue",
+    difficulty: "Advanced",
+    xp: 30,
+    description:
+      "Create a Revenue column by multiplying Price by Quantity.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Create a new column using Price × Quantity.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Revenue"] = df["Price"] * df["Quantity"]
+
+df
+`,
+  },
+
+  {
+    id: "amazon-022",
+    title: "Calculate Total Revenue",
+    difficulty: "Advanced",
+    xp: 30,
+    description:
+      "Calculate the total revenue generated across the entire Amazon dataset.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Multiply Price by Quantity and then use sum().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+(df["Price"] * df["Quantity"]).sum()
+`,
+  },
+
+  {
+    id: "amazon-023",
+    title: "Average Product Price",
+    difficulty: "Advanced",
+    xp: 30,
+    description:
+      "Calculate the average product price.",
     dataset: "Amazon_sample.csv",
     hint:
       "Use mean() on Price.",
@@ -171,99 +507,98 @@ df["Price"].mean()
   },
 
   {
-    id: "amazon-008",
-    title: "Count Products by Category",
-    difficulty: "Beginner",
-    xp: 10,
+    id: "amazon-024",
+    title: "Total Quantity Sold",
+    difficulty: "Advanced",
+    xp: 30,
     description:
-      "Count how many records belong to each product category.",
+      "Calculate the total quantity of products sold across all records.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Try value_counts().",
+      "Use sum() on Quantity.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Category"].value_counts()
+df["Quantity"].sum()
 `,
   },
 
   {
-    id: "amazon-009",
-    title: "Filter High Rated Products",
-    difficulty: "Beginner",
-    xp: 10,
+    id: "amazon-025",
+    title: "Average Rating by Category",
+    difficulty: "Advanced",
+    xp: 30,
     description:
-      "Find all products with a rating of 4.5 or higher.",
+      "Calculate the average Rating for every Category.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use boolean filtering.",
+      "Use groupby() and mean().",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df[df["Rating"] >= 4.5]
+df.groupby(
+    "Category"
+)["Rating"].mean()
 `,
   },
 
   {
-    id: "amazon-010",
-    title: "Highest Priced Products",
-    difficulty: "Beginner",
-    xp: 10,
+    id: "amazon-026",
+    title: "Quantity Sold by Category",
+    difficulty: "Advanced",
+    xp: 30,
     description:
-      "Display the 10 most expensive products.",
+      "Calculate the total Quantity sold for every Category.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Sort Price in descending order.",
+      "Group by Category and sum Quantity.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.sort_values(
-    "Price",
-    ascending=False
-).head(10)
+df.groupby(
+    "Category"
+)["Quantity"].sum()
 `,
   },
 
-  // ============================================================
-  // INTERMEDIATE 11-20
-  // ============================================================
-
   {
-    id: "amazon-011",
-    title: "Category Revenue",
-    difficulty: "Intermediate",
-    xp: 20,
+    id: "amazon-027",
+    title: "Revenue by Category",
+    difficulty: "Advanced",
+    xp: 30,
     description:
-      "Calculate total revenue for each category using Price multiplied by Quantity.",
+      "Calculate total revenue generated by each product Category.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Create a revenue column first, then group by Category.",
+      "Create Revenue first, then group by Category.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby("Category")["Revenue"].sum().sort_values(
-    ascending=False
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
 )
+
+df.groupby(
+    "Category"
+)["Revenue"].sum()
 `,
   },
 
   {
-    id: "amazon-012",
+    id: "amazon-028",
     title: "Average Price by Brand",
-    difficulty: "Intermediate",
-    xp: 20,
+    difficulty: "Advanced",
+    xp: 30,
     description:
-      "Calculate the average product price for every brand.",
+      "Calculate the average Price for every Brand.",
     dataset: "Amazon_sample.csv",
     hint:
       "Group by Brand and calculate mean Price.",
@@ -272,149 +607,126 @@ df.groupby("Category")["Revenue"].sum().sort_values(
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("Brand")["Price"].mean().sort_values(
+df.groupby(
+    "Brand"
+)["Price"].mean()
+`,
+  },
+
+  {
+    id: "amazon-029",
+    title: "Sort Categories by Revenue",
+    difficulty: "Advanced",
+    xp: 30,
+    description:
+      "Calculate category revenue and sort the categories from highest to lowest revenue.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Use groupby(), sum(), and sort_values().",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
+
+df.groupby(
+    "Category"
+)["Revenue"].sum().sort_values(
     ascending=False
 )
 `,
   },
 
   {
-    id: "amazon-013",
-    title: "Sales by State",
-    difficulty: "Intermediate",
-    xp: 20,
+    id: "amazon-030",
+    title: "Top 5 Products by Quantity",
+    difficulty: "Advanced",
+    xp: 30,
     description:
-      "Calculate the total quantity sold in each state.",
+      "Find the 5 products with the highest total quantity sold.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Group State and sum Quantity.",
+      "Group by ProductName, sum Quantity, sort descending, and use head(5).",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("State")["Quantity"].sum().sort_values(
+df.groupby(
+    "ProductName"
+)["Quantity"].sum().sort_values(
     ascending=False
-)
+).head(5)
 `,
   },
 
+  // ============================================================
+  // EXPERT 31-40
+  // DEEPER DATA ANALYSIS
+  // ============================================================
+
   {
-    id: "amazon-014",
-    title: "Revenue by Brand",
-    difficulty: "Intermediate",
-    xp: 20,
+    id: "amazon-031",
+    title: "Top 10 Products by Revenue",
+    difficulty: "Expert",
+    xp: 40,
     description:
-      "Calculate total revenue generated by each brand.",
+      "Find the 10 products generating the highest total revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Revenue = Price × Quantity.",
+      "Revenue is Price × Quantity.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
 
-df.groupby("Brand")["Revenue"].sum().sort_values(
+df.groupby(
+    "ProductName"
+)["Revenue"].sum().sort_values(
     ascending=False
-)
+).head(10)
 `,
   },
 
   {
-    id: "amazon-015",
-    title: "Category Performance",
-    difficulty: "Intermediate",
-    xp: 20,
+    id: "amazon-032",
+    title: "Revenue by State",
+    difficulty: "Expert",
+    xp: 40,
     description:
-      "For every category, calculate total quantity and average rating.",
+      "Calculate total revenue generated in every State and return the top 10 states.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use groupby().agg().",
+      "Create Revenue, group by State, sum, sort, and use head(10).",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("Category").agg(
-    TotalQuantity=("Quantity", "sum"),
-    AverageRating=("Rating", "mean")
-).sort_values(
-    "TotalQuantity",
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
+
+df.groupby(
+    "State"
+)["Revenue"].sum().sort_values(
     ascending=False
-)
+).head(10)
 `,
   },
 
   {
-    id: "amazon-016",
-    title: "High Value Orders",
-    difficulty: "Intermediate",
-    xp: 20,
-    description:
-      "Create an OrderValue column using Price × Quantity and display orders worth more than 5000.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Create a calculated column and filter it.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderValue"] = df["Price"] * df["Quantity"]
-
-df[df["OrderValue"] > 5000]
-`,
-  },
-
-  {
-    id: "amazon-017",
-    title: "Best Category by Rating",
-    difficulty: "Intermediate",
-    xp: 20,
-    description:
-      "Find the category with the highest average rating.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Group by Category, calculate mean Rating, sort, and select the first row.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df.groupby("Category")["Rating"].mean().sort_values(
-    ascending=False
-).head(1)
-`,
-  },
-
-  {
-    id: "amazon-018",
-    title: "Quantity Statistics",
-    difficulty: "Intermediate",
-    xp: 20,
-    description:
-      "Calculate the minimum, maximum, and average quantity sold.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Use agg() with min, max, and mean.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Quantity"].agg(
-    ["min", "max", "mean"]
-)
-`,
-  },
-
-  {
-    id: "amazon-019",
-    title: "Brand Quantity Ranking",
-    difficulty: "Intermediate",
-    xp: 20,
+    id: "amazon-033",
+    title: "Quantity Sold by Brand",
+    difficulty: "Expert",
+    xp: 40,
     description:
       "Rank brands by their total quantity sold.",
     dataset: "Amazon_sample.csv",
@@ -425,133 +737,62 @@ df["Quantity"].agg(
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("Brand")["Quantity"].sum().sort_values(
+df.groupby(
+    "Brand"
+)["Quantity"].sum().sort_values(
     ascending=False
 )
 `,
   },
 
   {
-    id: "amazon-020",
-    title: "High Rated Expensive Products",
-    difficulty: "Intermediate",
-    xp: 20,
-    description:
-      "Find products with a rating of at least 4.5 and a price above 1000.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Combine two boolean conditions using &.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df[
-    (df["Rating"] >= 4.5)
-    & (df["Price"] > 1000)
-]
-`,
-  },
-
-  // ============================================================
-  // ADVANCED 21-30
-  // ============================================================
-
-  {
-    id: "amazon-021",
-    title: "Revenue by State",
-    difficulty: "Advanced",
-    xp: 30,
-    description:
-      "Calculate total revenue for every state and return the top 10 states.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Create Revenue, group by State, sum, sort, and head.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby("State")["Revenue"].sum().sort_values(
-    ascending=False
-).head(10)
-`,
-  },
-
-  {
-    id: "amazon-022",
-    title: "Category Revenue Share",
-    difficulty: "Advanced",
-    xp: 30,
-    description:
-      "Calculate each category's total revenue and its percentage contribution to overall revenue.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Calculate category revenue first, then divide by total revenue.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-result = df.groupby("Category")["Revenue"].sum().to_frame()
-
-result["RevenueShare"] = (
-    result["Revenue"] / result["Revenue"].sum()
-) * 100
-
-result.sort_values(
-    "Revenue",
-    ascending=False
-)
-`,
-  },
-
-  {
-    id: "amazon-023",
+    id: "amazon-034",
     title: "Customer Spending",
-    difficulty: "Advanced",
-    xp: 30,
+    difficulty: "Expert",
+    xp: 40,
     description:
-      "Calculate total spending for every customer and display the top 10 customers.",
+      "Calculate total spending for every CustomerID and return the top 10 customers.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Revenue is Price × Quantity.",
+      "Revenue is Price × Quantity. Group Revenue by CustomerID.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby("CustomerID")["Revenue"].sum().sort_values(
-    ascending=False
-).head(10)
-`,
-  },
-
-  {
-    id: "amazon-024",
-    title: "Brand Category Performance",
-    difficulty: "Advanced",
-    xp: 30,
-    description:
-      "Calculate total revenue for each Brand and Category combination.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Group by two columns.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
 
 df.groupby(
-    ["Brand", "Category"]
+    "CustomerID"
+)["Revenue"].sum().sort_values(
+    ascending=False
+).head(10)
+`,
+  },
+
+  {
+    id: "amazon-035",
+    title: "Revenue by Brand",
+    difficulty: "Expert",
+    xp: 40,
+    description:
+      "Calculate total revenue for every Brand and sort the results from highest to lowest.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Create Revenue and group it by Brand.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
+
+df.groupby(
+    "Brand"
 )["Revenue"].sum().sort_values(
     ascending=False
 )
@@ -559,15 +800,42 @@ df.groupby(
   },
 
   {
-    id: "amazon-025",
-    title: "Top Product per Category",
-    difficulty: "Advanced",
-    xp: 30,
+    id: "amazon-036",
+    title: "Category Performance Summary",
+    difficulty: "Expert",
+    xp: 40,
     description:
-      "Find the product with the highest total quantity sold within each category.",
+      "For every Category, calculate total Quantity, total Revenue, and average Rating.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Aggregate by Category and ProductName, then use groupby().idxmax().",
+      "Use groupby().agg() with multiple aggregations.",
+    starterCode: starter,
+    solutionCode: `import pandas as pd
+
+df = pd.read_csv("Amazon_sample.csv")
+
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
+
+df.groupby("Category").agg(
+    TotalQuantity=("Quantity", "sum"),
+    TotalRevenue=("Revenue", "sum"),
+    AverageRating=("Rating", "mean")
+)
+`,
+  },
+
+  {
+    id: "amazon-037",
+    title: "Top Product in Each Category",
+    difficulty: "Expert",
+    xp: 40,
+    description:
+      "Find the product with the highest total quantity sold within each Category.",
+    dataset: "Amazon_sample.csv",
+    hint:
+      "Group by Category and ProductName first, then find the maximum within each category.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
@@ -588,64 +856,12 @@ sales.loc[
   },
 
   {
-    id: "amazon-026",
-    title: "Monthly Revenue",
-    difficulty: "Advanced",
-    xp: 30,
-    description:
-      "Convert OrderDate to datetime and calculate total revenue for each month.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Use pd.to_datetime() and group by the month period.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
-)
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby(
-    df["OrderDate"].dt.to_period("M")
-)["Revenue"].sum()
-`,
-  },
-
-  {
-    id: "amazon-027",
-    title: "Monthly Order Count",
-    difficulty: "Advanced",
-    xp: 30,
-    description:
-      "Find the number of orders placed in each month.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Convert OrderDate and group by month.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
-)
-
-df.groupby(
-    df["OrderDate"].dt.to_period("M")
-)["OrderID"].count()
-`,
-  },
-
-  {
-    id: "amazon-028",
+    id: "amazon-038",
     title: "Customer Order Frequency",
-    difficulty: "Advanced",
-    xp: 30,
+    difficulty: "Expert",
+    xp: 40,
     description:
-      "Find the customers who placed the most orders.",
+      "Find the 10 customers with the highest number of orders.",
     dataset: "Amazon_sample.csv",
     hint:
       "Count OrderID for every CustomerID.",
@@ -654,598 +870,345 @@ df.groupby(
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df.groupby("CustomerID")["OrderID"].count().sort_values(
+df.groupby(
+    "CustomerID"
+)["OrderID"].count().sort_values(
     ascending=False
 ).head(10)
 `,
   },
 
   {
-    id: "amazon-029",
+    id: "amazon-039",
     title: "Average Order Value",
-    difficulty: "Advanced",
-    xp: 30,
+    difficulty: "Expert",
+    xp: 40,
     description:
-      "Calculate the average order value across the dataset.",
+      "Calculate the average order value using Price × Quantity.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Create OrderValue using Price × Quantity and calculate mean.",
+      "Create OrderValue and calculate its mean.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["OrderValue"] = df["Price"] * df["Quantity"]
+df["OrderValue"] = (
+    df["Price"] * df["Quantity"]
+)
 
 df["OrderValue"].mean()
 `,
   },
 
   {
-    id: "amazon-030",
-    title: "State Category Revenue",
-    difficulty: "Advanced",
-    xp: 30,
-    description:
-      "Calculate total revenue for every State and Category combination.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Group by State and Category.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby(
-    ["State", "Category"]
-)["Revenue"].sum().sort_values(
-    ascending=False
-)
-`,
-  },
-
-  // ============================================================
-  // EXPERT 31-40
-  // ============================================================
-
-  {
-    id: "amazon-031",
-    title: "Top Customer per State",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Find the customer with the highest total spending in every state.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Aggregate by State and CustomerID, then use idxmax().",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-sales = (
-    df.groupby(
-        ["State", "CustomerID"]
-    )["Revenue"]
-    .sum()
-    .reset_index()
-)
-
-sales.loc[
-    sales.groupby("State")["Revenue"].idxmax()
-]
-`,
-  },
-
-  {
-    id: "amazon-032",
-    title: "Top Brand per Category",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Find the brand generating the highest revenue in every category.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Group by Category and Brand first.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-sales = (
-    df.groupby(
-        ["Category", "Brand"]
-    )["Revenue"]
-    .sum()
-    .reset_index()
-)
-
-sales.loc[
-    sales.groupby("Category")["Revenue"].idxmax()
-]
-`,
-  },
-
-  {
-    id: "amazon-033",
-    title: "Daily Revenue",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Calculate total revenue generated on each order date.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Convert OrderDate to datetime and group by date.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
-)
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby("OrderDate")["Revenue"].sum().sort_index()
-`,
-  },
-
-  {
-    id: "amazon-034",
-    title: "Highest Revenue Day",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Find the date with the highest total revenue.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Aggregate revenue by date and use idxmax().",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
-)
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-daily = df.groupby("OrderDate")["Revenue"].sum()
-
-daily.loc[[daily.idxmax()]]
-`,
-  },
-
-  {
-    id: "amazon-035",
-    title: "Customer Average Order Value",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Calculate the average order value for every customer and return the top 10.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Create OrderValue and group by CustomerID.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderValue"] = df["Price"] * df["Quantity"]
-
-df.groupby("CustomerID")["OrderValue"].mean().sort_values(
-    ascending=False
-).head(10)
-`,
-  },
-
-  {
-    id: "amazon-036",
-    title: "Product Revenue Ranking",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Calculate total revenue for every product and assign a descending rank.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Use rank(method='dense', ascending=False).",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-result = df.groupby(
-    "ProductName"
-)["Revenue"].sum().to_frame()
-
-result["Rank"] = result["Revenue"].rank(
-    method="dense",
-    ascending=False
-)
-
-result.sort_values("Rank")
-`,
-  },
-
-  {
-    id: "amazon-037",
-    title: "Category Revenue Statistics",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "For each category calculate total revenue, average revenue per row, and total quantity.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Use groupby().agg() with multiple named aggregations.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby("Category").agg(
-    TotalRevenue=("Revenue", "sum"),
-    AverageRevenue=("Revenue", "mean"),
-    TotalQuantity=("Quantity", "sum")
-).sort_values(
-    "TotalRevenue",
-    ascending=False
-)
-`,
-  },
-
-  {
-    id: "amazon-038",
-    title: "Monthly Revenue Growth",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Calculate monthly revenue and the percentage change from the previous month.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Use pct_change() after calculating monthly revenue.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
-)
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-monthly = df.groupby(
-    df["OrderDate"].dt.to_period("M")
-)["Revenue"].sum().to_frame()
-
-monthly["Growth"] = monthly["Revenue"].pct_change() * 100
-
-monthly
-`,
-  },
-
-  {
-    id: "amazon-039",
-    title: "Running Revenue",
-    difficulty: "Expert",
-    xp: 40,
-    description:
-      "Calculate daily revenue and the cumulative revenue over time.",
-    dataset: "Amazon_sample.csv",
-    hint:
-      "Use cumsum() after sorting by date.",
-    starterCode: starter,
-    solutionCode: `import pandas as pd
-
-df = pd.read_csv("Amazon_sample.csv")
-
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
-)
-
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-daily = df.groupby(
-    "OrderDate"
-)["Revenue"].sum().sort_index().to_frame()
-
-daily["CumulativeRevenue"] = daily["Revenue"].cumsum()
-
-daily
-`,
-  },
-
-  {
     id: "amazon-040",
-    title: "High Value Customer Segmentation",
+    title: "Revenue Share by Category",
     difficulty: "Expert",
     xp: 40,
     description:
-      "Calculate customer revenue and classify customers with revenue above 10000 as High Value, otherwise Regular.",
+      "Calculate each category's percentage contribution to total revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use np.where() or a lambda function.",
-    starterCode: `import pandas as pd
-import numpy as np
-
-df = pd.read_csv("Amazon_sample.csv")
-
-# Write your solution below
-`,
+      "Calculate category revenue and divide it by total category revenue.",
+    starterCode: starter,
     solutionCode: `import pandas as pd
-import numpy as np
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-customers = df.groupby(
-    "CustomerID"
-)["Revenue"].sum().to_frame()
-
-customers["Segment"] = np.where(
-    customers["Revenue"] > 10000,
-    "High Value",
-    "Regular"
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
 )
 
-customers
+category_revenue = (
+    df.groupby("Category")["Revenue"]
+    .sum()
+)
+
+revenue_share = (
+    category_revenue /
+    category_revenue.sum()
+) * 100
+
+revenue_share.sort_values(
+    ascending=False
+)
 `,
   },
 
   // ============================================================
   // MASTER 41-50
+  // VISUALIZATION + COMPLETE ANALYSIS
   // ============================================================
 
   {
     id: "amazon-041",
-    title: "Top 3 Products per Category",
+    title: "Chart Revenue by Category",
     difficulty: "Master",
     xp: 50,
     description:
-      "Find the top 3 products by total quantity sold within every category.",
+      "Create a bar chart showing total revenue for each product category.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Aggregate first, then use groupby().head(3) after sorting.",
-    starterCode: starter,
+      "Group revenue by Category and use plot(kind='bar').",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-sales = (
-    df.groupby(
-        ["Category", "ProductName"]
-    )["Quantity"]
-    .sum()
-    .reset_index()
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
 )
 
-sales.sort_values(
-    ["Category", "Quantity"],
-    ascending=[True, False]
-).groupby(
-    "Category"
-).head(3)
+revenue = (
+    df.groupby("Category")["Revenue"]
+    .sum()
+    .sort_values(ascending=False)
+)
+
+revenue.plot(
+    kind="bar",
+    title="Revenue by Category"
+)
+
+plt.xlabel("Category")
+plt.ylabel("Revenue")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-042",
-    title: "Customer Revenue Ranking",
+    title: "Plot Price Distribution",
     difficulty: "Master",
     xp: 50,
     description:
-      "Calculate total customer revenue and assign each customer a descending revenue rank.",
+      "Create a histogram showing the distribution of product prices.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use groupby(), sum(), and rank().",
-    starterCode: starter,
+      "Use plt.hist() with the Price column.",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-customers = df.groupby(
-    "CustomerID"
-)["Revenue"].sum().to_frame()
-
-customers["Rank"] = customers["Revenue"].rank(
-    method="dense",
-    ascending=False
+plt.hist(
+    df["Price"].dropna(),
+    bins=20
 )
 
-customers.sort_values("Rank")
+plt.title("Product Price Distribution")
+plt.xlabel("Price")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-043",
-    title: "Best Selling Product by Month",
+    title: "Plot Rating Distribution",
     difficulty: "Master",
     xp: 50,
     description:
-      "Find the product with the highest total quantity sold in each month.",
+      "Create a histogram showing how product ratings are distributed.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Create a month column, aggregate by month and product, then use idxmax().",
-    starterCode: starter,
+      "Use plt.hist() with Rating.",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
+plt.hist(
+    df["Rating"].dropna(),
+    bins=10
 )
 
-df["Month"] = df["OrderDate"].dt.to_period("M")
-
-sales = (
-    df.groupby(
-        ["Month", "ProductName"]
-    )["Quantity"]
-    .sum()
-    .reset_index()
-)
-
-sales.loc[
-    sales.groupby("Month")["Quantity"].idxmax()
-]
+plt.title("Rating Distribution")
+plt.xlabel("Rating")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-044",
-    title: "State Revenue Contribution",
+    title: "Chart Quantity by Category",
     difficulty: "Master",
     xp: 50,
     description:
-      "Calculate total revenue for each state and its percentage contribution to total revenue.",
+      "Create a bar chart showing total quantity sold for each category.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Calculate state revenue and divide by the overall revenue.",
-    starterCode: starter,
+      "Group Quantity by Category and plot the result as a bar chart.",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-states = df.groupby(
-    "State"
-)["Revenue"].sum().to_frame()
-
-states["RevenueShare"] = (
-    states["Revenue"] / states["Revenue"].sum()
-) * 100
-
-states.sort_values(
-    "Revenue",
-    ascending=False
+quantity = (
+    df.groupby("Category")["Quantity"]
+    .sum()
+    .sort_values(ascending=False)
 )
+
+quantity.plot(
+    kind="bar",
+    title="Quantity Sold by Category"
+)
+
+plt.xlabel("Category")
+plt.ylabel("Quantity")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-045",
-    title: "Category Leader by State",
+    title: "Top 10 Products Chart",
     difficulty: "Master",
     xp: 50,
     description:
-      "For every state, find the category generating the highest revenue.",
+      "Create a bar chart showing the top 10 products by total revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Aggregate by State and Category, then find the maximum within each State.",
-    starterCode: starter,
+      "Calculate product revenue, sort descending, and select the top 10.",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-sales = (
-    df.groupby(
-        ["State", "Category"]
-    )["Revenue"]
-    .sum()
-    .reset_index()
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
 )
 
-sales.loc[
-    sales.groupby("State")["Revenue"].idxmax()
-]
+top_products = (
+    df.groupby("ProductName")["Revenue"]
+    .sum()
+    .sort_values(ascending=False)
+    .head(10)
+)
+
+top_products.plot(
+    kind="bar",
+    title="Top 10 Products by Revenue"
+)
+
+plt.xlabel("Product")
+plt.ylabel("Revenue")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-046",
-    title: "Monthly Category Revenue",
+    title: "Price vs Rating",
     difficulty: "Master",
     xp: 50,
     description:
-      "Calculate monthly revenue for every product category.",
+      "Create a scatter plot comparing product Price and Rating.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use Period-based grouping with Category.",
-    starterCode: starter,
+      "Use plt.scatter() with Price on the x-axis and Rating on the y-axis.",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["OrderDate"] = pd.to_datetime(
-    df["OrderDate"]
+plot_data = df[
+    ["Price", "Rating"]
+].dropna()
+
+plt.scatter(
+    plot_data["Price"],
+    plot_data["Rating"]
 )
 
-df["Revenue"] = df["Price"] * df["Quantity"]
-
-df.groupby(
-    [
-        df["OrderDate"].dt.to_period("M"),
-        "Category"
-    ]
-)["Revenue"].sum()
+plt.title("Price vs Rating")
+plt.xlabel("Price")
+plt.ylabel("Rating")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-047",
-    title: "Customer Lifetime Revenue",
+    title: "Revenue by State Chart",
     difficulty: "Master",
     xp: 50,
     description:
-      "Calculate total lifetime revenue for every customer and return the top 20 customers.",
+      "Create a bar chart showing the top 10 states by total revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Group revenue by CustomerID and sort descending.",
-    starterCode: starter,
+      "Group revenue by State, sort descending, and use head(10).",
+    starterCode: plottingStarter,
     solutionCode: `import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
 
-df.groupby(
-    "CustomerID"
-)["Revenue"].sum().sort_values(
-    ascending=False
-).head(20)
+state_revenue = (
+    df.groupby("State")["Revenue"]
+    .sum()
+    .sort_values(ascending=False)
+    .head(10)
+)
+
+state_revenue.plot(
+    kind="bar",
+    title="Top 10 States by Revenue"
+)
+
+plt.xlabel("State")
+plt.ylabel("Revenue")
+plt.tight_layout()
+plt.show()
 `,
   },
 
   {
     id: "amazon-048",
-    title: "Revenue vs Quantity by Brand",
+    title: "Analyze Brand Performance",
     difficulty: "Master",
     xp: 50,
     description:
-      "For every brand calculate total quantity sold, total revenue, and average selling price.",
+      "Create a brand-level summary containing total quantity sold, total revenue, and average rating. Sort brands by revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Use multiple aggregations in groupby().agg().",
+      "Use Revenue = Price × Quantity and groupby().agg().",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
 
-df.groupby("Brand").agg(
+brand_summary = df.groupby("Brand").agg(
     TotalQuantity=("Quantity", "sum"),
     TotalRevenue=("Revenue", "sum"),
-    AveragePrice=("Price", "mean")
-).sort_values(
+    AverageRating=("Rating", "mean")
+)
+
+brand_summary.sort_values(
     "TotalRevenue",
     ascending=False
 )
@@ -1254,47 +1217,55 @@ df.groupby("Brand").agg(
 
   {
     id: "amazon-049",
-    title: "Identify Best Performing Category",
+    title: "Compare Category Performance",
     difficulty: "Master",
     xp: 50,
     description:
-      "Determine the category with the highest total revenue, highest quantity sold, and highest average rating.",
+      "Build a category-level analysis containing total quantity, total revenue, average price, and average rating. Sort the categories by revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Create a category summary using multiple aggregations.",
+      "Use groupby().agg() with multiple calculations.",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
 
-summary = df.groupby("Category").agg(
-    TotalRevenue=("Revenue", "sum"),
+category_summary = df.groupby("Category").agg(
     TotalQuantity=("Quantity", "sum"),
+    TotalRevenue=("Revenue", "sum"),
+    AveragePrice=("Price", "mean"),
     AverageRating=("Rating", "mean")
 )
 
-summary
+category_summary.sort_values(
+    "TotalRevenue",
+    ascending=False
+)
 `,
   },
 
   {
     id: "amazon-050",
-    title: "Build a Complete Sales Summary",
+    title: "Complete Amazon Sales Analysis",
     difficulty: "Master",
     xp: 50,
     description:
-      "Build a category-level sales summary containing total orders, total quantity, total revenue, average order value, and average rating. Sort the result by total revenue.",
+      "Perform a complete sales analysis of the Amazon dataset. Create a category-level summary containing total orders, total quantity, total revenue, average order value, and average rating, then sort the categories by revenue.",
     dataset: "Amazon_sample.csv",
     hint:
-      "Create Revenue first, then combine several aggregations with groupby().agg().",
+      "Create Revenue first, then combine several aggregations using groupby().agg().",
     starterCode: starter,
     solutionCode: `import pandas as pd
 
 df = pd.read_csv("Amazon_sample.csv")
 
-df["Revenue"] = df["Price"] * df["Quantity"]
+df["Revenue"] = (
+    df["Price"] * df["Quantity"]
+)
 
 summary = df.groupby("Category").agg(
     TotalOrders=("OrderID", "count"),

@@ -9,7 +9,7 @@ import SQLSidebar from "../Sidebar/SQLSidebar";
 import { useSQLPlayground } from "../Hooks/useSQLPlayground";
 
 export default function SQLWorkspace() {
-  const sql = useSQLPlayground();
+  const sql = useSQLPlayground("practice");
 
   return (
     <section className="mt-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   CheckCircle2,
   CircleHelp,
@@ -11,6 +11,7 @@ import {
 import engine from "../Engine/SQLJSEngine";
 import { sqlChallenges } from "../Data/sqlChallenges";
 import { useSQLPlayground } from "../Hooks/useSQLPlayground";
+import { SQLPlaygroundStore } from "../State/SQLPlaygroundStore";
 
 interface ChallengePanelProps {
   sql: ReturnType<typeof useSQLPlayground>;
@@ -19,23 +20,27 @@ interface ChallengePanelProps {
 export default function ChallengePanel({
   sql,
 }: ChallengePanelProps) {
-    const [currentChallenge, setCurrentChallenge] =
-  useState(0);
+  const [currentChallenge, setCurrentChallenge] =
+    useState(
+      SQLPlaygroundStore.challengeMeta
+        .currentChallenge
+    );
 
-const [status, setStatus] = useState<
-  "idle" | "correct" | "wrong"
->("idle");
+  const [status, setStatus] = useState<
+    "idle" | "correct" | "wrong"
+  >(
+    SQLPlaygroundStore.challengeMeta.status
+  );
 
-const challenge =
-  sqlChallenges[currentChallenge];
+  const challenge =
+    sqlChallenges[currentChallenge];
 
   async function checkAnswer() {
     try {
       await engine.initialize();
 
-      const userResult = await engine.runQuery(
-        sql.query
-      );
+      const userResult =
+        await engine.runQuery(sql.query);
 
       const expectedResult =
         await engine.runQuery(
@@ -53,6 +58,7 @@ const challenge =
                 .reduce(
                   (obj, key) => {
                     obj[key] = row[key];
+
                     return obj;
                   },
                   {} as Record<
@@ -72,29 +78,62 @@ const challenge =
         normalize(userResult) ===
         normalize(expectedResult)
       ) {
+        SQLPlaygroundStore.setChallengeStatus(
+          "correct"
+        );
+
         setStatus("correct");
 
-setTimeout(() => {
-  if (
-    currentChallenge <
-    sqlChallenges.length - 1
-  ) {
-    setCurrentChallenge(
-      (prev) => prev + 1
-    );
+        SQLPlaygroundStore.markChallengeCompleted(
+          currentChallenge
+        );
 
-    setStatus("idle");
+        setTimeout(() => {
+          if (
+            currentChallenge <
+            sqlChallenges.length - 1
+          ) {
+            const nextChallenge =
+              currentChallenge + 1;
 
-    sql.setQuery("");
-    sql.setResult([]);
-    sql.setRowsReturned(0);
-    sql.setExecutionTime(0);
-  }
-}, 800);
+            SQLPlaygroundStore.setCurrentChallenge(
+              nextChallenge
+            );
+
+            SQLPlaygroundStore.setChallengeStatus(
+              "idle"
+            );
+
+            setCurrentChallenge(
+              nextChallenge
+            );
+
+            setStatus("idle");
+
+            sql.setQuery(
+              SQLPlaygroundStore.getChallengeQuery(
+                nextChallenge
+              )
+            );
+
+            sql.setResult([]);
+            sql.setRowsReturned(0);
+            sql.setExecutionTime(0);
+            sql.setError(null);
+          }
+        }, 800);
       } else {
+        SQLPlaygroundStore.setChallengeStatus(
+          "wrong"
+        );
+
         setStatus("wrong");
       }
     } catch {
+      SQLPlaygroundStore.setChallengeStatus(
+        "wrong"
+      );
+
       setStatus("wrong");
     }
   }
@@ -115,9 +154,7 @@ setTimeout(() => {
       {/* Header */}
 
       <div className="border-b border-white/10 p-5">
-
         <div className="flex items-center justify-between">
-
           <span
             className={`
               rounded-full
@@ -129,7 +166,8 @@ setTimeout(() => {
               ${
                 challenge.difficulty === "Easy"
                   ? "bg-green-500/10 text-green-400"
-                  : challenge.difficulty === "Medium"
+                  : challenge.difficulty ===
+                    "Medium"
                   ? "bg-yellow-500/10 text-yellow-400"
                   : "bg-red-500/10 text-red-400"
               }
@@ -148,7 +186,6 @@ setTimeout(() => {
               {challenge.xp} XP
             </span>
           </div>
-
         </div>
 
         <h2 className="mt-4 text-xl font-bold">
@@ -156,19 +193,16 @@ setTimeout(() => {
         </h2>
 
         <p className="mt-2 text-sm text-muted-foreground">
-          Challenge {currentChallenge + 1} / {sqlChallenges.length}
+          Challenge {currentChallenge + 1} /{" "}
+          {sqlChallenges.length}
         </p>
-
       </div>
 
       {/* Body */}
 
-      <div className="flex-1 overflow-y-auto p-5 space-y-6">
-
+      <div className="flex-1 space-y-6 overflow-y-auto p-5">
         <div>
-
           <div className="flex items-center gap-2">
-
             <CircleHelp
               size={16}
               className="text-primary"
@@ -177,19 +211,15 @@ setTimeout(() => {
             <h3 className="font-semibold">
               Description
             </h3>
-
           </div>
 
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             {challenge.description}
           </p>
-
         </div>
 
         <div>
-
           <div className="flex items-center gap-2">
-
             <Lightbulb
               size={16}
               className="text-yellow-400"
@@ -198,19 +228,15 @@ setTimeout(() => {
             <h3 className="font-semibold">
               Hint
             </h3>
-
           </div>
 
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             {challenge.hint}
           </p>
-
         </div>
 
         <div>
-
           <div className="flex items-center gap-2">
-
             <CheckCircle2
               size={16}
               className="text-green-400"
@@ -219,11 +245,9 @@ setTimeout(() => {
             <h3 className="font-semibold">
               Expected Columns
             </h3>
-
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
-
             {challenge.expectedColumns.map(
               (column) => (
                 <span
@@ -241,55 +265,62 @@ setTimeout(() => {
                 </span>
               )
             )}
-
           </div>
-
         </div>
-
       </div>
-{currentChallenge ===
-sqlChallenges.length - 1 &&
-status === "correct" && (
-  <div
-    className="
-      rounded-xl
-      border
-      border-green-500/30
-      bg-green-500/10
-      p-4
-      text-center
-    "
-  >
-    <h3 className="text-lg font-bold text-green-400">
-      🎉 Congratulations!
-    </h3>
 
-    <p className="mt-2 text-sm text-zinc-400">
-      You completed every SQL challenge.
-    </p>
+      {/* Completion */}
 
-    <button
-      onClick={() => {
-        setCurrentChallenge(0);
-        setStatus("idle");
-      }}
-      className="
-        mt-5
-        rounded-xl
-        bg-primary
-        px-6
-        py-2.5
-      "
-    >
-      Restart
-    </button>
-  </div>
-)}
-    
-         {/* Footer */}
+      {currentChallenge ===
+        sqlChallenges.length - 1 &&
+        status === "correct" && (
+          <div
+            className="
+              rounded-xl
+              border
+              border-green-500/30
+              bg-green-500/10
+              p-4
+              text-center
+            "
+          >
+            <h3 className="text-lg font-bold text-green-400">
+              🎉 Congratulations!
+            </h3>
 
-      <div className="border-t border-white/10 p-5 space-y-4">
+            <p className="mt-2 text-sm text-zinc-400">
+              You completed every SQL challenge.
+            </p>
 
+            <button
+              onClick={() => {
+                SQLPlaygroundStore.resetChallenge();
+
+                setCurrentChallenge(0);
+                setStatus("idle");
+
+                sql.setQuery("");
+                sql.setResult([]);
+                sql.setRowsReturned(0);
+                sql.setExecutionTime(0);
+                sql.setError(null);
+              }}
+              className="
+                mt-5
+                rounded-xl
+                bg-primary
+                px-6
+                py-2.5
+              "
+            >
+              Restart
+            </button>
+          </div>
+        )}
+
+      {/* Footer */}
+
+      <div className="space-y-4 border-t border-white/10 p-5">
         {status === "correct" && (
           <div
             className="
@@ -337,9 +368,7 @@ status === "correct" && (
         >
           Check Answer
         </button>
-
       </div>
-
     </aside>
   );
 }

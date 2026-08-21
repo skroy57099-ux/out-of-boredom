@@ -1,14 +1,21 @@
 import { detectIntent } from "../Knowledge/intent";
 import { getProjectById } from "@/components/Projects/projects";
-
+import { boreIntelligence } from "../Intelligence/BoreIntelligence";
 import {
   type BoreResponse,
+
   buildProjectResponse,
   buildTechnologyResponse,
   buildFeaturedProjectsResponse,
+  buildWebsiteResponse,
+  buildBorePlayResponse,
   buildGreetingResponse,
   buildThanksResponse,
   buildFarewellResponse,
+
+  buildHowAreYouResponse,
+  buildIdentityResponse,
+
   buildUnknownResponse,
 } from "./responseBuilder";
 
@@ -72,8 +79,27 @@ export class ConversationEngine {
     let response: BoreResponse;
 
     switch (result.intent) {
-      case "greeting":
-    return buildGreetingResponse();
+      case "greeting": {
+
+  if (result.value === "how_are_you") {
+    response =
+      buildHowAreYouResponse();
+
+    break;
+  }
+
+  if (result.value === "identity") {
+    response =
+      buildIdentityResponse();
+
+    break;
+  }
+
+  response =
+    buildGreetingResponse();
+
+  break;
+}
 
 case "thanks":
     return buildThanksResponse();
@@ -109,16 +135,38 @@ case "farewell":
         break;
       }
 
-      case "category": {
-        this.rememberCategory(result.value ?? "");
-        this.state.lastIntent = "category";
+     case "category": {
 
-        response = buildFeaturedProjectsResponse(
-          result.projects ?? []
-        );
+  this.rememberCategory(
+    result.value ?? ""
+  );
 
-        break;
-      }
+  this.state.lastIntent = "category";
+
+  if (
+    result.value === "bore_play"
+  ) {
+    response =
+      buildBorePlayResponse(message);
+
+    break;
+  }
+  
+  if (
+    result.value === "website"
+  ) {
+    response =
+      buildWebsiteResponse(message);
+
+    break;
+  }
+  response =
+    buildFeaturedProjectsResponse(
+      result.projects ?? []
+    );
+
+  break;
+}
 
       case "featured": {
         this.state.lastIntent = "featured";
@@ -131,9 +179,53 @@ case "farewell":
       }
 
       default: {
-        this.state.lastIntent = "unknown";
-        response = buildUnknownResponse();
-      }
+  this.state.lastIntent = "unknown";
+
+  const intelligence =
+    boreIntelligence.prepare({
+      message,
+      context: {
+        history: this.state.history.map((turn) => ({
+          role: turn.role,
+          message: turn.message,
+        })),
+      },
+    });
+
+  console.log(
+    "BORE INTELLIGENCE ROUTING:",
+    intelligence
+  );
+
+  /**
+   * Personal knowledge and general questions
+   * will eventually be sent to the LLM.
+   *
+   * For now we expose the routing result so
+   * we can verify the intelligence layer.
+   */
+  if (
+    intelligence.mode === "personal" ||
+    intelligence.mode === "llm"
+  ) {
+    response = {
+      mood: "thinking",
+
+      title: "BORE Intelligence",
+
+      message:
+        intelligence.mode === "personal"
+          ? "I found relevant personal knowledge. My language intelligence is ready to process it."
+          : "This question requires general reasoning. My language intelligence layer is ready for it.",
+    };
+
+    break;
+  }
+
+  response = buildUnknownResponse();
+
+  break;
+}
     }
 
     const finalResponse = applyPersonality(response);

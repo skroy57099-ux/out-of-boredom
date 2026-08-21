@@ -8,48 +8,184 @@ import {
 } from "react";
 
 import engine from "../Engine/SQLJSEngine";
+import { SQLPlaygroundStore } from "../State/SQLPlaygroundStore";
 import { sampleData } from "../Data/sampleData";
 
 type TableName = keyof typeof sampleData;
 
-export function useSQLPlayground() {
-  const [query, setQuery] = useState(`SELECT *
-FROM customers
-WHERE city = 'Delhi';`);
+type SQLMode = "practice" | "challenge";
 
-  const [history, setHistory] = useState<
-    {
-      query: string;
-      time: string;
-    }[]
-  >([]);
+export function useSQLPlayground(
+  mode: SQLMode = "practice"
+) {
+  const storedState =
+    SQLPlaygroundStore.getWorkspace(mode);
 
-  const [selectedTable, setSelectedTable] =
-    useState<TableName>("customers");
+  const [query, setQueryState] =
+    useState(storedState.query);
 
-  const [loading, setLoading] = useState(false);
+  const [history, setHistoryState] =
+    useState(storedState.history);
 
-  const [result, setResult] = useState<
-    Record<string, unknown>[]
-  >([]);
+  const [selectedTable, setSelectedTableState] =
+    useState<TableName>(
+      storedState.selectedTable
+    );
 
-  const [executionTime, setExecutionTime] =
-    useState(0);
+  const [loading, setLoadingState] =
+    useState(storedState.loading);
 
-  const [rowsReturned, setRowsReturned] =
-    useState(0);
+  const [result, setResultState] =
+    useState(storedState.result);
 
-  const [error, setError] =
-    useState<string | null>(null);
+  const [executionTime, setExecutionTimeState] =
+    useState(storedState.executionTime);
+
+  const [rowsReturned, setRowsReturnedState] =
+    useState(storedState.rowsReturned);
+
+  const [error, setErrorState] =
+    useState(storedState.error);
 
   const setupPromise = useRef<
     Promise<void> | null
   >(null);
 
-  // Initialize SQL.js once
+  /*
+   * Persisted setters
+   */
+
+  const setQuery = useCallback(
+    (value: string) => {
+      setQueryState(value);
+
+      if (mode === "challenge") {
+        const currentChallenge =
+          SQLPlaygroundStore.challengeMeta
+            .currentChallenge;
+
+        SQLPlaygroundStore.setChallengeQuery(
+          currentChallenge,
+          value
+        );
+      } else {
+        SQLPlaygroundStore.practice.query =
+          value;
+      }
+    },
+    [mode]
+  );
+
+  const setSelectedTable = useCallback(
+    (value: TableName) => {
+      setSelectedTableState(value);
+
+      SQLPlaygroundStore.getWorkspace(
+        mode
+      ).selectedTable = value;
+    },
+    [mode]
+  );
+
+  const setLoading = useCallback(
+    (value: boolean) => {
+      setLoadingState(value);
+
+      SQLPlaygroundStore.getWorkspace(
+        mode
+      ).loading = value;
+    },
+    [mode]
+  );
+
+  const setResult = useCallback(
+    (
+      value: Record<string, unknown>[]
+    ) => {
+      setResultState(value);
+
+      SQLPlaygroundStore.getWorkspace(
+        mode
+      ).result = value;
+    },
+    [mode]
+  );
+
+  const setExecutionTime = useCallback(
+    (value: number) => {
+      setExecutionTimeState(value);
+
+      SQLPlaygroundStore.getWorkspace(
+        mode
+      ).executionTime = value;
+    },
+    [mode]
+  );
+
+  const setRowsReturned = useCallback(
+    (value: number) => {
+      setRowsReturnedState(value);
+
+      SQLPlaygroundStore.getWorkspace(
+        mode
+      ).rowsReturned = value;
+    },
+    [mode]
+  );
+
+  const setError = useCallback(
+    (value: string | null) => {
+      setErrorState(value);
+
+      SQLPlaygroundStore.getWorkspace(
+        mode
+      ).error = value;
+    },
+    [mode]
+  );
+
+  const setHistory = useCallback(
+    (
+      value:
+        | {
+            query: string;
+            time: string;
+          }[]
+        | ((
+            prev: {
+              query: string;
+              time: string;
+            }[]
+          ) => {
+            query: string;
+            time: string;
+          }[])
+    ) => {
+      setHistoryState((prev) => {
+        const next =
+          typeof value === "function"
+            ? value(prev)
+            : value;
+
+        SQLPlaygroundStore.getWorkspace(
+          mode
+        ).history = next;
+
+        return next;
+      });
+    },
+    [mode]
+  );
+
+  /*
+   * Initialize SQL.js once for this mounted hook.
+   *
+   * The engine itself remains unchanged.
+   */
 
   useEffect(() => {
-    setupPromise.current = engine.initialize();
+    setupPromise.current =
+      engine.initialize();
 
     setupPromise.current.catch((err) => {
       console.error(err);
@@ -60,9 +196,11 @@ WHERE city = 'Delhi';`);
           : "Initialization failed"
       );
     });
-  }, []);
+  }, [setError]);
 
-  // Execute SQL
+  /*
+   * Execute SQL
+   */
 
   const runQuery = useCallback(async () => {
     setLoading(true);
@@ -76,12 +214,14 @@ WHERE city = 'Delhi';`);
 
       const start = performance.now();
 
-      const rows = await engine.runQuery(query);
+      const rows =
+        await engine.runQuery(query);
 
       setHistory((prev) =>
         [
           {
             query: query.trim(),
+
             time: new Date().toLocaleTimeString(
               [],
               {
@@ -93,7 +233,8 @@ WHERE city = 'Delhi';`);
 
           ...prev.filter(
             (item) =>
-              item.query !== query.trim()
+              item.query !==
+              query.trim()
           ),
         ].slice(0, 20)
       );
@@ -124,7 +265,15 @@ WHERE city = 'Delhi';`);
     } finally {
       setLoading(false);
     }
-  }, [query]);
+  }, [
+    query,
+    setLoading,
+    setError,
+    setHistory,
+    setResult,
+    setRowsReturned,
+    setExecutionTime,
+  ]);
 
   return {
     query,

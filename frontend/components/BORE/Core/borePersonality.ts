@@ -108,14 +108,48 @@ function randomItem(items: string[]): string {
 export function applyPersonality(
   response: BoreResponse
 ): BoreResponse {
-  const intro = randomItem(intros[response.mood]);
-  const outro = randomItem(outros[response.mood]);
+
+  // ========================================================
+  // Some responses should remain clean and natural.
+  //
+  // Especially:
+  // - personal LLM answers
+  // - general LLM answers
+  // - greetings
+  // - identity responses
+  // - conversational responses
+  // ========================================================
+
+  if (
+    response.usePersonality === false ||
+    response.type === "personal" ||
+    response.type === "general" ||
+    response.type === "conversation"
+  ) {
+    return response;
+  }
+
+  // ========================================================
+  // Existing BORE personality layer
+  // ========================================================
+
+  const intro =
+    randomItem(
+      intros[response.mood]
+    );
+
+  const outro =
+    randomItem(
+      outros[response.mood]
+    );
 
   const message = [
     intro,
     "",
     response.message,
-    outro ? `\n${outro}` : "",
+    outro
+      ? `\n${outro}`
+      : "",
   ]
     .filter(Boolean)
     .join("\n");

@@ -10,7 +10,7 @@ import ChallengePanel from "../Challenge/ChallengePanel";
 import { useSQLPlayground } from "../Hooks/useSQLPlayground";
 
 export default function ChallengeWorkspace() {
-  const sql = useSQLPlayground();
+  const sql = useSQLPlayground("challenge");
 
   return (
     <section>

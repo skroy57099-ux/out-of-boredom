@@ -40,10 +40,34 @@ export function detectIntent(message: string): IntentResult {
     "good morning",
     "good afternoon",
     "good evening",
-    "how are you",
-    "who are you",
-    "introduce yourself",
   ];
+  // ==========================================================
+// BORE Identity / Casual Conversation
+// ==========================================================
+
+if (
+  query === "how are you" ||
+  query === "how are you doing" ||
+  query === "how are things"
+) {
+  return {
+    intent: "greeting",
+    value: "how_are_you",
+  };
+}
+
+if (
+  query === "who are you" ||
+  query === "what are you" ||
+  query === "what is bore" ||
+  query === "who is bore" ||
+  query === "introduce yourself"
+) {
+  return {
+    intent: "greeting",
+    value: "identity",
+  };
+}
 
   if (
     greetings.some(
@@ -115,6 +139,65 @@ export function detectIntent(message: string): IntentResult {
       projects: getFeaturedProjects(),
     };
   }
+  // ==========================================================
+// Website / Out of Boredom
+// ==========================================================
+
+// ==========================================================
+// BORE Play
+// ==========================================================
+
+const borePlayTerms = [
+  "bore play",
+  "boreplay",
+  "bore playground",
+  "bore playgrounds",
+  "what is bore play",
+  "tell me about bore play",
+  "what can i do in bore play",
+  "what playgrounds are available",
+  "which playgrounds are available",
+  "available playgrounds",
+  "sql playground",
+  "python playground",
+  "csv analyzer",
+];
+
+if (
+  borePlayTerms.some((term) =>
+    query.includes(term)
+  )
+) {
+  return {
+    intent: "category",
+    value: "bore_play",
+  };
+}
+
+// ==========================================================
+// Website / Out of Boredom
+// ==========================================================
+
+const websiteTerms = [
+  "out of boredom",
+  "out of boredom website",
+  "this website",
+  "this portfolio",
+  "website",
+  "portfolio website",
+];
+
+if (
+  websiteTerms.some((term) =>
+    query.includes(term)
+  )
+) {
+  return {
+    intent: "category",
+    value: "website",
+  };
+}
+
 
   // ==========================================================
   // Project Search (Highest Priority)
