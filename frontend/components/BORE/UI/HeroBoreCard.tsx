@@ -19,7 +19,9 @@ export default function HeroBoreCard() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setStatusIndex((prev) => (prev + 1) % STATUS_MESSAGES.length);
+      setStatusIndex(
+        (prev) => (prev + 1) % STATUS_MESSAGES.length
+      );
     }, 4000);
 
     return () => clearInterval(interval);
@@ -86,8 +88,6 @@ export default function HeroBoreCard() {
         >
           <BoreAvatar size="lg" />
         </motion.div>
-
-        {/* <BoreProjection /> */}
       </div>
 
       {/* Content */}

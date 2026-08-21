@@ -1,31 +1,73 @@
 @import "tailwindcss";
 
+/* ==========================================================
+   OUT OF BOREDOM
+   Global Theme
+   ========================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ededed;
+
+  --font-code: var(--font-jetbrains);
+
+  /*
+   * Out of Boredom is intentionally dark-only.
+   * The user's system/browser theme must not change the site.
+   */
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  min-height: 100%;
+  background: var(--background);
+  color-scheme: dark;
 }
 
 body {
+  min-height: 100%;
+  margin: 0;
+
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-:root {
-  --font-code: var(--font-jetbrains);
-}
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  font-family:
+    var(--font-geist-sans),
+    Arial,
+    Helvetica,
+    sans-serif;
 
-  --font-code: var(--font-jetbrains);
+  overflow-x: hidden;
+
+  color-scheme: dark;
+}
+
+/* ==========================================================
+   GLOBAL BOX MODEL
+   ========================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================
+   RESPONSIVE MEDIA
+   ========================================================== */
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+/* ==========================================================
+   INTERACTION
+   ========================================================== */
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }

@@ -41,7 +41,8 @@ export default function BoreMessages({
         >
           <div
             className={`
-              max-w-[80%]
+              max-w-[85%] 
+              sm:max-w-[80%]
               whitespace-pre-wrap
               rounded-2xl
               px-4

@@ -18,16 +18,12 @@ export default function BoreWindow() {
   const [isTyping, setIsTyping] =
     useState(false);
 
-  async function handleSend(
-    message: string
-  ) {
+  async function handleSend(message: string) {
     if (!message.trim()) return;
 
     const userMessage: ChatMessage = {
       id: crypto.randomUUID(),
-
       role: "user",
-
       text: message,
     };
 
@@ -40,35 +36,27 @@ export default function BoreWindow() {
 
     try {
       // ====================================================
-      // First: existing BORE V2 brain
+      // FIRST: EXISTING BORE V2 BRAIN
       // ====================================================
 
       const localResponse =
         boreConversation.process(message);
 
       // ====================================================
-      // Check whether the local engine has a response
-      // that requires the LLM.
+      // CHECK WHETHER LLM IS REQUIRED
       // ====================================================
 
       const shouldUseLLM =
         localResponse.title ===
-          "BORE Intelligence";
+        "BORE Intelligence";
 
       if (!shouldUseLLM) {
         const boreReply: ChatMessage = {
           id: crypto.randomUUID(),
-
           role: "bore",
-
-          text:
-            localResponse.message,
-
-          title:
-            localResponse.title,
-
-          mood:
-            localResponse.mood,
+          text: localResponse.message,
+          title: localResponse.title,
+          mood: localResponse.mood,
         };
 
         setMessages((prev) => [
@@ -94,33 +82,29 @@ export default function BoreWindow() {
               ? ("user" as const)
               : ("bore" as const),
 
-          message:
-            item.text,
+          message: item.text,
         }));
 
-      const response =
-        await fetch(
-          "/api/bore",
-          {
-            method: "POST",
+      const response = await fetch(
+        "/api/bore",
+        {
+          method: "POST",
 
-            headers: {
-              "Content-Type":
-                "application/json",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            message,
+
+            context: {
+              source: "portfolio",
+              history,
             },
-
-            body: JSON.stringify({
-              message,
-
-              context: {
-                source:
-                  "portfolio",
-
-                history,
-              },
-            }),
-          }
-        );
+          }),
+        }
+      );
 
       const data =
         await response.json();
@@ -136,31 +120,22 @@ export default function BoreWindow() {
       }
 
       // ====================================================
-      // LLM Response
+      // LLM RESPONSE
       // ====================================================
 
       const boreReply: ChatMessage = {
         id: crypto.randomUUID(),
-
         role: "bore",
-
-        text:
-          data.text,
-
-        title:
-          "BORE",
-
-        mood:
-          "speaking",
+        text: data.text,
+        title: "BORE",
+        mood: "speaking",
       };
 
       setMessages((prev) => [
         ...prev,
         boreReply,
       ]);
-
     } catch (error) {
-
       console.error(
         "BORE chat error:",
         error
@@ -168,15 +143,9 @@ export default function BoreWindow() {
 
       const errorReply: ChatMessage = {
         id: crypto.randomUUID(),
-
         role: "bore",
-
-        title:
-          "BORE",
-
-        mood:
-          "error",
-
+        title: "BORE",
+        mood: "error",
         text:
           "My external intelligence layer isn't responding right now. The local portfolio knowledge is still online.",
       };
@@ -185,7 +154,6 @@ export default function BoreWindow() {
         ...prev,
         errorReply,
       ]);
-
     } finally {
       setIsTyping(false);
     }
@@ -195,26 +163,52 @@ export default function BoreWindow() {
     <div
       className="
         flex
+        w-full
+        max-w-[380px]
+
+        h-[430px]
+        max-h-[calc(100dvh-96px)]
+
         flex-col
-        h-[560px]
-        w-[380px]
         overflow-hidden
+
         rounded-2xl
+
         border
         border-slate-700
+
         bg-slate-950
+
         shadow-2xl
+
+        sm:h-[460px]
       "
     >
+      {/* ==================================================
+          GREETING
+          ================================================== */}
+
       <BoreGreeting />
+
+      {/* ==================================================
+          MESSAGES
+          ================================================== */}
 
       <BoreMessages
         messages={messages}
       />
 
+      {/* ==================================================
+          TYPING
+          ================================================== */}
+
       {isTyping && (
         <BoreTyping />
       )}
+
+      {/* ==================================================
+          INPUT
+          ================================================== */}
 
       <BoreInput
         onSend={handleSend}

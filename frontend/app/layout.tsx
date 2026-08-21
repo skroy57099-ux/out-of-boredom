@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import {
@@ -29,7 +29,16 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "BORE",
-  description: "Learn Data Analytics through interactive playgrounds.",
+  description:
+    "Learn Data Analytics through interactive playgrounds.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "dark",
+  themeColor: "#050505",
 };
 
 export default function RootLayout({
@@ -49,8 +58,7 @@ export default function RootLayout({
       `}
       suppressHydrationWarning
     >
-      <body className="h-full">
-
+      <body className="min-h-full bg-[#050505] text-[#ededed]">
         <Script
           src="https://cdn.jsdelivr.net/pyodide/v0.28.2/full/pyodide.js"
           strategy="afterInteractive"
@@ -59,7 +67,6 @@ export default function RootLayout({
         {children}
 
         <BoreFloating />
-
       </body>
     </html>
   );
